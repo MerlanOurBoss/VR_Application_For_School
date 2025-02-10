@@ -10,6 +10,9 @@ TagManager:
   - Pero
   - Fire
   - Box
+  - RJ45
+  - Tip2
+  - Tip0.1
   layers:
   - Default
   - TransparentFX
@@ -23,8 +26,8 @@ TagManager:
   - RightHandPhysic
   - Post-Processing
   - HandInteractable
-  - 
-  - 
+  - RJ45
+  - Tips
   - 
   - 
   - 
