@@ -10,6 +10,8 @@ public class IPAddressGame : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI timerText;    // Для отображения таймера
     [SerializeField] private float maxTime = 120f;
+    public float countComputer = 0;
+    [SerializeField] private TextMeshProUGUI textCountComputer;
 
     private List<string> allIPs = new List<string>(); // Хранит все IP-адреса
     private string targetIP; // Случайно выбранный целевой IP
@@ -36,6 +38,7 @@ public class IPAddressGame : MonoBehaviour
     }
     private void Update()
     {
+        textCountComputer.text = countComputer + "/24";
         if (isStarted && !isGameOver)
         {
             NextTargetIP();

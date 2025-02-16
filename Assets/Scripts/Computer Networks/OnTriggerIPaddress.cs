@@ -5,33 +5,23 @@ using UnityEngine;
 
 public class OnTriggerIPaddress : MonoBehaviour
 {
-    public GameObject ip;
-    private IPAddressGame ipaddressGame;
+    public IPAddressGame ipaddressGame;
     private GameObject _player;
     public GameObject _miniGame;
     private void Start()
     {
-        _player = GameObject.FindGameObjectWithTag("MainCamera");
-        ipaddressGame = FindObjectOfType<IPAddressGame>();
-        Debug.Log(ipaddressGame.name);
+        _player = GameObject.FindGameObjectWithTag("Player");
     }
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "MainCamera")
+        if (other.gameObject.tag == "Player")
         {
-            ip.SetActive(true);
-        }
-        if (Input.GetKey(KeyCode.E))
-        {
-            ipaddressGame.CheckIPAddress(ip.GetComponentInChildren<TextMeshProUGUI>().text.ToString());
-            Cursor.lockState = CursorLockMode.None;
             _miniGame.SetActive(true);
-            _player.SetActive(false);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        ip.SetActive(false);
+        _miniGame.SetActive(false);
     }
 }

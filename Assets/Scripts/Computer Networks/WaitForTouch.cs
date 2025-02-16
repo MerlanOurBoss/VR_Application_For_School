@@ -22,4 +22,9 @@ public class WaitForTouch : MonoBehaviour
             RJ45HighLigth.SetActive(false);
         }
     }
+
+    public void isOFF()
+    {
+        isTouched = false;
+    }
 }
