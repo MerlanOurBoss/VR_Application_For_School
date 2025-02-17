@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -9,12 +10,12 @@ public class IPAddressGame : MonoBehaviour
     [SerializeField] private TextMeshProUGUI resultText;  // Для подсказки результата
 
     [SerializeField] private TextMeshProUGUI timerText;    // Для отображения таймера
-    [SerializeField] private float maxTime = 120f;
+    [SerializeField] private float maxTime = 300f;
     public float countComputer = 0;
     [SerializeField] private TextMeshProUGUI textCountComputer;
-
+    [SerializeField] private IPv4Address[] ipv4Addresses;
     private List<string> allIPs = new List<string>(); // Хранит все IP-адреса
-    private string targetIP; // Случайно выбранный целевой IP
+    public string targetIP; // Случайно выбранный целевой IP
     public bool isStarted = false;
     private bool isGameOver = false;
 
@@ -64,6 +65,14 @@ public class IPAddressGame : MonoBehaviour
 
             targetIPText.text = "Мына IP-ді табыңыз: " + targetIP;
             resultText.text = "";
+
+            for (int i = 0; i < ipv4Addresses.Length; i++)
+            {
+                if (ipv4Addresses[i].textMeshPro.text == targetIP)
+                {
+                    ipv4Addresses[i].VisibleGameObject();
+                }
+            }
         }
         else
         {
@@ -79,6 +88,14 @@ public class IPAddressGame : MonoBehaviour
         {
             resultText.text = "Дұрыс! Сіз IP-ді таптыңыз: " + targetIP;
 
+            for (int i = 0; i < ipv4Addresses.Length; i++)
+            {
+                if (ipv4Addresses[i].textMeshPro.text == targetIP)
+                {
+                    ipv4Addresses[i].InvisibleGameObject();
+                }
+            }
+
             allIPs.Remove(targetIP);
 
             StartCoroutine(LoadNextIP());
@@ -91,7 +108,7 @@ public class IPAddressGame : MonoBehaviour
 
     private IEnumerator LoadNextIP()
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(5.0f);
         NextTargetIP();
     }
     private void StartTimer()

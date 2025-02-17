@@ -1417,7 +1417,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1372699722726252616}
   - component: {fileID: 8686980511789985608}
-  - component: {fileID: 2239971806112213544}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
@@ -1453,20 +1452,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 2, z: 0.8}
   m_Center: {x: 4.3468435e-15, y: 0, z: 0.2313271}
---- !u!114 &2239971806112213544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5390533073414274738}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3417d5f0f1ac0864eb225547ac0ef755, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ipaddressGame: {fileID: 0}
-  _miniGame: {fileID: 994882641948992037}
 --- !u!1 &5528464772462675039
 GameObject:
   m_ObjectHideFlags: 0
@@ -5597,6 +5582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textMeshPro: {fileID: 4652072652915515404}
+  _miniGame: {fileID: 994882641948992037}
 --- !u!1 &8642829851832046264
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,22 +5,13 @@ using UnityEngine;
 
 public class OnTriggerIPaddress : MonoBehaviour
 {
-    public IPAddressGame ipaddressGame;
-    private GameObject _player;
     public GameObject _miniGame;
-    private void Start()
+    private void VisibleGameObject()
     {
-        _player = GameObject.FindGameObjectWithTag("Player");
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            _miniGame.SetActive(true);
-        }
+        _miniGame.SetActive(true);
     }
 
-    private void OnTriggerExit(Collider other)
+    private void InvisibleGameObject()
     {
         _miniGame.SetActive(false);
     }

@@ -91,6 +91,7 @@ public class buttonPushConnect : MonoBehaviour
                 if (iPAddressGame != null)
                 {
                     iPAddressGame.isStarted = true;
+                    iPAddressGame = null;
                 }
                 if (commutatorToRouter != null)
                 {

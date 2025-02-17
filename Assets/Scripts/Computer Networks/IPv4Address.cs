@@ -8,6 +8,16 @@ public class IPv4Address : MonoBehaviour
     // —сылка на TextMeshPro GUI
     public TextMeshProUGUI textMeshPro;
     public readonly string randomIPv4;
+    public GameObject _miniGame;
+    public void VisibleGameObject()
+    {
+        _miniGame.SetActive(true);
+    }
+
+    public void InvisibleGameObject()
+    {
+        _miniGame.SetActive(false);
+    }
     private void Awake()
     {
         if (textMeshPro == null)
