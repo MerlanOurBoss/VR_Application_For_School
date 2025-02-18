@@ -19,6 +19,8 @@ public class IPAddressGame : MonoBehaviour
     public bool isStarted = false;
     private bool isGameOver = false;
 
+    private bool isPushedButton = false;
+
     private float remainingTime; // Оставшееся время
     private bool isTimerRunning = true;
 
@@ -35,23 +37,25 @@ public class IPAddressGame : MonoBehaviour
             Debug.LogError("Нет IP-адресов для игры!");
             return;
         }
-        StartTimer();
     }
     private void Update()
     {
-        textCountComputer.text = countComputer + "/24";
-        if (isStarted && !isGameOver)
+        if (isPushedButton)
         {
-            NextTargetIP();
-            isStarted = false;
-        }
-        if (isTimerRunning)
-        {
-            UpdateTimer();
-        }
-        else if (!isTimerRunning)
-        {
-            EndGame();
+            textCountComputer.text = countComputer + "/24";
+            if (isStarted && !isGameOver)
+            {
+                NextTargetIP();
+                isStarted = false;
+            }
+            if (isTimerRunning)
+            {
+                UpdateTimer();
+            }
+            else if (!isTimerRunning)
+            {
+                EndGame();
+            }
         }
     }
 
@@ -111,13 +115,18 @@ public class IPAddressGame : MonoBehaviour
         yield return new WaitForSeconds(5.0f);
         NextTargetIP();
     }
-    private void StartTimer()
+    public void StartTimer()
     {
         if (isGameOver) return;
 
         remainingTime = maxTime;
         isTimerRunning = true;
         UpdateTimerText();
+    }
+    
+    public void IsPush(bool a)
+    {
+        isPushedButton = true;
     }
 
     private void StopTimer()
