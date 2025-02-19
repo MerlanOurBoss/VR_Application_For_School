@@ -20,11 +20,13 @@ public class buttonPushConnect : MonoBehaviour
     public WaitForTouch waitForTouch;
     public Tip3 tip3;
     public GameObject computerThings;
-    private void Start()
-    {
-        textMeshPro = GameObject.FindGameObjectWithTag("TextCamera");
-        textMain = textMeshPro.GetComponent<TextMeshProUGUI>();
-    }
+
+    public bool isCorrect = false;
+    public AIHelper AIHelper;
+
+    public GameObject CrossoverRed;
+    public GameObject StraightRed;
+    public GameObject StraightGreen;
     public void MakeCrossover()
     {
         Debug.Log("Crossover");
@@ -41,15 +43,19 @@ public class buttonPushConnect : MonoBehaviour
 
     public void Connect(string str)
     {
-        
-        //textMain.text = "";
         if (str == "Computer->Commutator")
         {
             if (isStraight)
             {
-                textMain.text = "Дұрыс қосылды";
+                AIHelper.OnCorrectAction();
+                isCorrect = true;
                 anim.Play("InsertCabel");
-                StartCoroutine(EnableRouterAfterAnimation3()); 
+                StartCoroutine(EnableRouterAfterAnimation3());
+
+                CrossoverRed.SetActive(false);
+                StraightRed.SetActive(false);
+                StraightGreen.SetActive(true);
+
                 if (iPAddressGame != null)
                 {
                     iPAddressGame.countComputer++;
@@ -59,35 +65,58 @@ public class buttonPushConnect : MonoBehaviour
             }
             else
             {
-                textMain.text = "Қате қосылым";
+                AIHelper.OnIncorrectAction();
+
+                CrossoverRed.SetActive(true);
+                StraightRed.SetActive(false);
+                StraightGreen.SetActive(false);
+
+                isCorrect = false;
             }
         }
         else if (str == "Router->Internet")
         {
             if (isStraight)
             {
-                textMain.text = "Дұрыс қосылды";
+                AIHelper.OnCorrectAction();
+                isCorrect = true;
                 anim.Play("InsertCabel");
                 isRightRtC = true;
                 StartCoroutine(EnableRouterAfterAnimation());
+
+                CrossoverRed.SetActive(false);
+                StraightRed.SetActive(false);
+                StraightGreen.SetActive(true);
+
                 if (routerToInternet != null)
                 {
                     routerToInternet.isOn = true;
                 }
-                
             }
             else
             {
-                textMain.text = "Қате қосылым";
+                AIHelper.OnIncorrectAction();
+
+                CrossoverRed.SetActive(true);
+                StraightRed.SetActive(false);
+                StraightGreen.SetActive(false);
+
+                isCorrect = false;
             }
         }
         else if (str == "Router->Commutator")
         {
             if (isStraight)
             {
-                textMain.text = "Дұрыс қосылды";
+                AIHelper.OnCorrectAction();
+                isCorrect = true;
                 anim.Play("InsertCabel");
                 StartCoroutine(EnableRouterAfterAnimation2());
+
+                CrossoverRed.SetActive(false);
+                StraightRed.SetActive(false);
+                StraightGreen.SetActive(true);
+
                 if (iPAddressGame != null)
                 {
                     iPAddressGame.isStarted = true;
@@ -100,7 +129,13 @@ public class buttonPushConnect : MonoBehaviour
             }
             else
             {
-                textMain.text = "Қате қосылым";
+                AIHelper.OnIncorrectAction();
+
+                CrossoverRed.SetActive(true);
+                StraightRed.SetActive(false);
+                StraightGreen.SetActive(false);
+
+                isCorrect = false;
             }
         }
     }

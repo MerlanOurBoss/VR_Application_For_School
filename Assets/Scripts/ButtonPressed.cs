@@ -24,10 +24,16 @@ public class ButtonPressed : MonoBehaviour
 
     void Update()
     {
-        if (!isPressed && GetValue() + threshold >= 1)
+        float value = GetValue();
+
+        if (!isPressed && value >= 1 - threshold)
+        {
             Pressed();
-        if (isPressed && GetValue() + threshold >= 1)
+        }
+        else if (isPressed && value < 1 - threshold)
+        {
             Released();
+        }
     }
 
     private float GetValue()

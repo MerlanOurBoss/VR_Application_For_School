@@ -11,7 +11,7 @@ public class IPAddressGame : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI timerText;    // Для отображения таймера
     [SerializeField] private float maxTime = 300f;
-    public float countComputer = 0;
+    public int countComputer = 0;
     [SerializeField] private TextMeshProUGUI textCountComputer;
     [SerializeField] private IPv4Address[] ipv4Addresses;
     private List<string> allIPs = new List<string>(); // Хранит все IP-адреса
@@ -19,9 +19,9 @@ public class IPAddressGame : MonoBehaviour
     public bool isStarted = false;
     private bool isGameOver = false;
 
-    private bool isPushedButton = false;
+    public bool isPushedButton = false;
 
-    private float remainingTime; // Оставшееся время
+    public float remainingTime; // Оставшееся время
     private bool isTimerRunning = true;
 
     private void Start()
