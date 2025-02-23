@@ -7,6 +7,7 @@ public class IPv4Address : MonoBehaviour
 {
     // —сылка на TextMeshPro GUI
     public TextMeshProUGUI textMeshPro;
+    public TextMeshProUGUI vlan;
     public readonly string randomIPv4;
     public GameObject _miniGame;
     public void VisibleGameObject()

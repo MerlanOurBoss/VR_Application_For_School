@@ -2,15 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
+using Random = UnityEngine.Random;
 
 public class AIHelper : MonoBehaviour
 {
     public TextMeshProUGUI textDisplay; // Текстовое поле для отображения сообщений
     public IPAddressGame game; // Ссылка на скрипт IPAddressGame
-
+    public AudioSource audioSource;
     public int connectedDevices = 0;
     public int currentStep = 1; // Текущий шаг
     private bool isWaitingForInput = false; // Ожидание ввода игрока
+
+    // Аудиоклипы для каждого текста
+    public AudioClip[] step1AudioClips;
+    public AudioClip[] step2AudioClips;
+    public AudioClip[] step3AudioClips;
+    public AudioClip[] step4AudioClips;
+    public AudioClip[] step5AudioClips;
+
+    public AudioClip[][] errorAudioClips;
+    public AudioClip[][] successAudioClips;
+    public AudioClip[] finalMessageAudioClip;
 
     // Тексты для каждого шага
     private string[][] steps = new string[][]
@@ -20,14 +33,14 @@ public class AIHelper : MonoBehaviour
             "Сәлем, досым! Қош келдің, желілік курсқа!",
             "Сәлеметсің бе! Желі сабағына хош келдің!",
             "Сәлем, дос! Желі туралы үйренуге дайынсың ба?",
-            "Қош келдің! Сабақты бастау үшін үстелдегі батырманы бас."
+            "Қош келдің, желілік курсқа!"
         },
         new string[]
         {
-            "Бастайық! Үстелдегі RJ-45 кабелін алып, сырттан келіп тұрған интернетке қос.",
-            "Жұмысты бастайық! RJ-45 кабелін алып, сыртқы интернетке жалға.",
-            "Кеттік! Үстелден RJ-45 кабелін алып, интернет көзіне қос.",
-            "Ал, іске кірісейік! RJ-45 кабелін дұрыс жерге жалға.",
+            "Бастайық! Үстелдегі кабелді алып, сырттан келіп тұрған интернетке қос.",
+            "Жұмысты бастайық! кабелді алып, сыртқы интернетке жалға.",
+            "Кеттік! Үстелден кабелді алып, интернет көзіне қос.",
+            "Ал, іске кірісейік! Кабелді дұрыс жерге жалға.",
             "Ал, бастайық! Кабелді интернет желісіне жалға."
         },
         new string[]
@@ -62,10 +75,10 @@ public class AIHelper : MonoBehaviour
         new string[]
         {
             "Қате! Бұл жерге тікелей қосу қажет.",
-            "Дұрыс емес! Кабелді тура жалға.",
-            "Қате кетті! Оны тікелей қосу қажет.",
-            "Қате жалғадың! Тікелей жалғау керек.",
-            "Дұрыс емес! Басқа тәсілмен қос."
+            "Дұрыс емес! Кабелді тікелей жалғау керек.",
+            "Қате жалғадың! Мұнда тек тура қосу қажет.",
+            "Қате кетті! Кабелді тікелей жалға.",
+            "Дұрыс емес! Бұл жерге басқаша жалғау қажет."
         },
         new string[]
         {
@@ -116,15 +129,91 @@ public class AIHelper : MonoBehaviour
 
     private string[] finalMessages = new string[]
     {
-        "Уақыт аяқталды. Сен (сан) компьютерді жалғадың, жарайсың!",
-        "Керемет! Сен (сан) құрылғыны жалғап үлгердің.",
-        "Жарайсың! Барлығы (сан) компьютер жалғанды.",
-        "Өте жақсы! Сен (сан) құрылғыны дұрыс жалғап шықтың.",
-        "Тамаша! Сен (сан) компьютерді қосып үлгердің."
+        "Мерзім аяқталды. Қосылу сәтті өтті, тамаша",
+        "Уақыт аяқталды. Барлық компьютерлер жалғанды, керемет",
+        "Уақыт аяқталды. Компьютерлер жалғаңды, жарайсың",
+        "Уақыт бітті. Компьютерлер қосылды, жарайсың",
+        "Уақыт өтті. Барлық жүйелер байланыстырылды, өте жақсы"
     };
     void Start()
     {
         DisplayText();
+
+        // Инициализация массива массивов
+        errorAudioClips = new AudioClip[3][];
+
+        // Загрузка аудио для первого массива
+        errorAudioClips[0] = new AudioClip[]
+        {
+            LoadAudioClip("Қате! Бұл жерге тікелей қосу қажет"),
+            LoadAudioClip("Дұрыс емес! Кабелді тікелей жалғау керек"),
+            LoadAudioClip("Қате жалғадың! Мұнда тек тура қосу қажет"),
+            LoadAudioClip("Қате кетті! Кабелді тікелей жалға"),
+            LoadAudioClip("Дұрыс емес! Бұл жерге басқаша жалғау қажет")
+        };
+
+        // Загрузка аудио для второго массива
+        errorAudioClips[1] = new AudioClip[]
+        {
+            LoadAudioClip("Қате! Бұл жерде тікелей қосылу керек"),
+            LoadAudioClip("Дұрыс емес! Кабелді тура жалға"),
+            LoadAudioClip("Қате кетті! Оны тікелей қосу қажет"),
+            LoadAudioClip("Қате жалғадың! Тікелей жалғау керек"),
+            LoadAudioClip("Дұрыс емес! Басқа тәсілмен қос")
+        };
+
+        // Загрузка аудио для третьего массива
+        errorAudioClips[2] = new AudioClip[]
+        {
+            LoadAudioClip("Қате! Бұл жерде тікелей жалғау керек"),
+            LoadAudioClip("Дұрыс емес! Қосылымды дұрыста"),
+            LoadAudioClip("Қате кетті! Кабелді тікелей жалғау қажет"),
+            LoadAudioClip("Қате жалғадың! Дұрыстап қайта жалға"),
+            LoadAudioClip("Дұрыс емес! Қосылымды қайта тексер")
+        };
+
+        // Инициализация массива массивов
+        successAudioClips = new AudioClip[3][];
+
+        // Загрузка аудио для первого массива
+        successAudioClips[0] = new AudioClip[]
+        {
+            LoadAudioClip("Дұрыс қостың!"),
+            LoadAudioClip("Жарайсың! Дұрыс жалғадың"),
+            LoadAudioClip("Өте жақсы! Барлығы дұрыс"),
+            LoadAudioClip("Дұрыс жалғадың, жалғастырайық!"),
+            LoadAudioClip("Тамаша! Барлығы дұрыс жалғанды")
+        };
+
+        // Загрузка аудио для второго массива
+        successAudioClips[1] = new AudioClip[]
+        {
+            LoadAudioClip("Дұрыс жалғадың"),
+            LoadAudioClip("Жарайсың! Барлығы дұрыс"),
+            LoadAudioClip("Тамаша! Қосылым дұрыс жасалды"),
+            LoadAudioClip("Өте жақсы! Дұрыс қосылған"),
+            LoadAudioClip("Дұрыс! Келесі қадамға өтейік")
+        };
+
+        // Загрузка аудио для третьего массива
+        successAudioClips[2] = new AudioClip[]
+        {
+            LoadAudioClip("Дұрыс! Қалған компьютерлерді жалғауға кіріс"),
+            LoadAudioClip("Жарайсың! Қазір қалған компьютерлерді жалғайық"),
+            LoadAudioClip("Тамаша! Келесі компьютерлерді қоса бер"),
+            LoadAudioClip("Дұрыс! Енді қалған құрылғыларды жалға"),
+            LoadAudioClip("Өте жақсы! Енді қалғандарын жалғауға көшейік")
+        };
+    }
+
+    private AudioClip LoadAudioClip(string clipName)
+    {
+        AudioClip clip = Resources.Load<AudioClip>(clipName);
+        if (clip != null)
+        {
+            Debug.Log($"Аудиофайл '{clipName}' не найден в папке Resources!");
+        }
+        return clip;
     }
 
     void Update()
@@ -147,9 +236,11 @@ public class AIHelper : MonoBehaviour
 
     void ShowFinalMessage()
     {
-        string finalMessage = finalMessages[Random.Range(0, finalMessages.Length)];
-        finalMessage = finalMessage.Replace("(сан)", connectedDevices.ToString());
+        int randomIndex = Random.Range(0, finalMessages.Length);
+        string finalMessage = finalMessages[randomIndex];
+        //finalMessage = finalMessage.Replace("(сан)", connectedDevices.ToString());
         textDisplay.text = finalMessage;
+        PlayFinalAudio(randomIndex);
     }
 
     // Отображение текста для текущего шага
@@ -158,8 +249,11 @@ public class AIHelper : MonoBehaviour
         if (currentStep <= steps.Length)
         {
             string[] currentTexts = steps[currentStep - 1];
-            string randomText = currentTexts[Random.Range(0, currentTexts.Length)];
+            int randomIndex = Random.Range(0, currentTexts.Length);
+            string randomText = currentTexts[randomIndex];
             textDisplay.text = randomText;
+
+            PlayAudioForCurrentStep(randomIndex);
         }
     }
 
@@ -170,12 +264,72 @@ public class AIHelper : MonoBehaviour
         DisplayText();
     }
 
+    // Воспроизведение аудио для текущего шага
+    void PlayAudioForCurrentStep(int index)
+    {
+        AudioClip[] audioClips = GetAudioClipsForCurrentStep();
+        if (audioClips != null && index < audioClips.Length && audioClips[index] != null)
+        {
+            audioSource.Stop(); // Останавливаем текущее аудио
+            audioSource.clip = audioClips[index]; // Устанавливаем новый аудиоклип
+            audioSource.Play(); // Воспроизводим аудио
+        }
+    }
+
+    AudioClip[] GetAudioClipsForCurrentStep()
+    {
+        switch (currentStep)
+        {
+            case 1: return step1AudioClips;
+            case 2: return step2AudioClips;
+            case 3: return step3AudioClips;
+            case 4: return step4AudioClips;
+            case 5: return step5AudioClips;
+            default: return null;
+        }
+    }
+
+    void PlayErrorAudio(int n, int index)
+    {
+        if (errorAudioClips.Length > 0)
+        {
+            audioSource.Stop();
+            AudioClip[] errorAudioClip = errorAudioClips[n];
+            audioSource.clip = errorAudioClip[index];
+            audioSource.Play();
+        }
+    }
+
+    void PlaySuccessAudio(int n, int index)
+    {
+        if (successAudioClips.Length > 0)
+        {
+            audioSource.Stop();
+            AudioClip[] successAudioClip = successAudioClips[n];
+            audioSource.clip = successAudioClip[index];
+            audioSource.Play();
+        }
+    }
+
+    void PlayFinalAudio(int index)
+    {
+        if (finalMessageAudioClip != null)
+        {
+            audioSource.Stop();
+            audioSource.clip = finalMessageAudioClip[index];
+            audioSource.Play();
+        }
+    }
+
     // Обработка правильного действия
     public void OnCorrectAction()
     {
         string[] successTexts = successMessages[currentStep - 3];
-        string randomText = successTexts[Random.Range(0, successTexts.Length)];
+        int randomIndex = Random.Range(0, successTexts.Length);
+        string randomText = successTexts[randomIndex];
         textDisplay.text = randomText;
+
+        PlaySuccessAudio(currentStep - 3, randomIndex);
         StartCoroutine(WaitAndNextStep());
     }
 
@@ -183,8 +337,11 @@ public class AIHelper : MonoBehaviour
     public void OnIncorrectAction()
     {
         string[] errorTexts = errorMessages[currentStep - 3];
-        string randomText = errorTexts[Random.Range(0, errorTexts.Length)];
+        int randomIndex = Random.Range(0, errorTexts.Length);
+        string randomText = errorTexts[randomIndex];
         textDisplay.text = randomText;
+
+        PlayErrorAudio(currentStep - 3, randomIndex);
     }
 
     // Ожидание и переход к следующему шагу

@@ -47,6 +47,14 @@ public class buttonPushConnect : MonoBehaviour
         {
             if (isStraight)
             {
+                if (iPAddressGame != null)
+                {
+                    iPAddressGame.SetVlan();
+                    iPAddressGame.countComputer++;
+                    iPAddressGame.NextTargetIP();
+                    iPAddressGame = null;
+                }
+
                 AIHelper.OnCorrectAction();
                 isCorrect = true;
                 anim.Play("InsertCabel");
@@ -55,13 +63,6 @@ public class buttonPushConnect : MonoBehaviour
                 CrossoverRed.SetActive(false);
                 StraightRed.SetActive(false);
                 StraightGreen.SetActive(true);
-
-                if (iPAddressGame != null)
-                {
-                    iPAddressGame.countComputer++;
-                    iPAddressGame.NextTargetIP();
-                    iPAddressGame = null;
-                }
             }
             else
             {

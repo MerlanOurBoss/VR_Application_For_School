@@ -14,7 +14,8 @@ public class IPAddressGame : MonoBehaviour
     public int countComputer = 0;
     [SerializeField] private TextMeshProUGUI textCountComputer;
     [SerializeField] private IPv4Address[] ipv4Addresses;
-    private List<string> allIPs = new List<string>(); // Хранит все IP-адреса
+    public List<string> allIPs = new List<string>(); // Хранит все IP-адреса
+    public Vlan vlan;
     public string targetIP; // Случайно выбранный целевой IP
     public bool isStarted = false;
     private bool isGameOver = false;
@@ -67,6 +68,8 @@ public class IPAddressGame : MonoBehaviour
         {
             targetIP = allIPs[Random.Range(0, allIPs.Count)];
 
+            allIPs.Remove(targetIP);
+
             targetIPText.text = "Мына IP-ді табыңыз: " + targetIP;
             resultText.text = "";
 
@@ -84,29 +87,16 @@ public class IPAddressGame : MonoBehaviour
         }
     }
 
-    public void CheckIPAddress(string playerChoice)
+    public void SetVlan()
     {
-        Debug.Log(playerChoice + " " + targetIP);
+        if (isGameOver) return;
 
-        if (playerChoice == targetIP)
+        for (int i = 0; i < ipv4Addresses.Length; i++)
         {
-            resultText.text = "Дұрыс! Сіз IP-ді таптыңыз: " + targetIP;
-
-            for (int i = 0; i < ipv4Addresses.Length; i++)
+            if (ipv4Addresses[i].textMeshPro.text == targetIP)
             {
-                if (ipv4Addresses[i].textMeshPro.text == targetIP)
-                {
-                    ipv4Addresses[i].InvisibleGameObject();
-                }
+                ipv4Addresses[i].vlan.text = vlan.vlanNumber.ToString();
             }
-
-            allIPs.Remove(targetIP);
-
-            StartCoroutine(LoadNextIP());
-        }
-        else
-        {
-            resultText.text = "Дұрыс емес! Қайтадан байқап көріңіз.";
         }
     }
 
