@@ -1,104 +1,104 @@
 # VR Application For School
 
-Образовательное VR-приложение на Unity для школьных уроков. Ученик проводит опыты по физике и химии в виртуальном классе и собирает компьютерную сеть, следуя подсказкам голосового помощника на казахском языке.
+An educational VR application for school lessons, built with Unity. Students run physics and chemistry experiments in a virtual classroom and assemble a computer network, guided by a voice assistant that speaks Kazakh.
 
-📁 [Материалы проекта на Google Drive](https://drive.google.com/file/d/1YYM1aucenOZT2IMj_lC3mtZWu1Nmds7M/view?pli=1)
+📁 [Project materials on Google Drive](https://drive.google.com/file/d/1YYM1aucenOZT2IMj_lC3mtZWu1Nmds7M/view?pli=1)
 
-## Содержание
+## What's inside
 
-В приложении две сцены из `Assets/Scenes`:
+The application has two scenes in `Assets/Scenes`:
 
-| № в сборке | Сцена | Назначение |
+| Build index | Scene | Purpose |
 |:---:|---|---|
-| 0 | `SampleScene` | Виртуальная лаборатория |
-| 1 | `ComputerNetworks` | Практикум по компьютерным сетям |
+| 0 | `SampleScene` | Virtual laboratory |
+| 1 | `ComputerNetworks` | Computer networking practical |
 
-### Виртуальная лаборатория
+### Virtual laboratory
 
-- **Масса и импульс:** кубы разной массы и толчок с силой, заданной ползунком.
-- **Падение в вакууме:** перо падает медленно в воздухе и без сопротивления внутри вакуумной зоны.
-- **Химия:** жидкости переливаются между колбами и смешиваются по цвету. Реакция может дать дым или возгорание, а кислотность проверяется тестером.
-- **Пожарная безопасность:** огонь тушится огнетушителем с ограниченным запасом.
-- **Доска:** на ней можно писать маркером, менять цвет и стирать написанное.
+- **Mass and momentum:** cubes of different masses and a push whose force is set with a slider.
+- **Falling in a vacuum:** a feather falls slowly in air and without resistance inside the vacuum zone.
+- **Chemistry:** liquids can be poured between flasks and mix by color. A reaction can produce smoke or fire, and acidity is checked with a tester.
+- **Fire safety:** a fire is put out with an extinguisher that has a limited charge.
+- **Whiteboard:** write with a marker, change its color, and erase what you wrote.
 
-Руки игрока физически взаимодействуют с объектами и кнопками сцены.
+The player's hands physically interact with objects and buttons in the scene.
 
-### Практикум по компьютерным сетям
+### Computer networking practical
 
-Голосовой помощник с текстом на экране ведёт ученика по шагам и реагирует на правильные и ошибочные действия:
+A voice assistant with on-screen text guides the student step by step and responds to correct and incorrect actions:
 
-1. Взять кабель со стола и подключить его к внешней сети.
-2. Подключить второй конец кабеля к маршрутизатору.
-3. Соединить маршрутизатор с коммутатором.
-4. Подключить компьютеры к коммутатору, выбирая тип соединения (прямое или кроссовер). Стенд показывает схемы обжима T-568A и T-568B.
-5. Найти компьютер с нужным IP-адресом по стрелке-указателю, назначить VLAN и подключить его.
+1. Take the cable from the desk and connect it to the external network.
+2. Connect the other end of the cable to the router.
+3. Connect the router to the switch.
+4. Connect the computers to the switch, choosing the connection type (straight-through or crossover). The stand shows the T-568A and T-568B wiring schemes.
+5. Use the arrow pointer to find the computer with the required IP address, assign a VLAN, and connect it.
 
-Цель — подключить 24 компьютера за отведённое время (по умолчанию 300 секунд). В сцене также есть имитация командной строки с командой `ping`. IP-адреса генерируются случайно, а результат `ping` смоделирован: реальные сетевые запросы приложение не отправляет.
+The goal is to connect 24 computers within the time limit (300 seconds by default). The scene also includes a simulated command prompt with a `ping` command. IP addresses are randomly generated and the `ping` output is simulated: the application sends no real network requests.
 
-## Технологии
+## Tech stack
 
 - Unity **2021.3.16f1**, Universal Render Pipeline 12.1.8, C#
 - XR Interaction Toolkit 2.0.4, XR Plugin Management 4.2.0
 - OpenXR 1.5.3, Oculus XR Plugin 3.2.2
 - TextMesh Pro, Post Processing
 
-Настроенные XR-провайдеры:
+Configured XR providers:
 
-| Платформа | Провайдеры | Устройства |
+| Platform | Providers | Devices |
 |---|---|---|
-| Windows | Oculus | Шлем Oculus, подключённый к ПК |
-| Android | OpenXR, Mock HMD | Автономный шлем, например Meta Quest 2 |
+| Windows | Oculus | Oculus headset connected to a PC |
+| Android | OpenXR, Mock HMD | Standalone headset, such as Meta Quest 2 |
 
-## Запуск
+## Getting started
 
-Понадобятся Unity Hub и Unity 2021.3.16f1. Для сборки под шлем также нужен модуль **Android Build Support**.
+You will need Unity Hub and Unity 2021.3.16f1. Building for a headset also requires the **Android Build Support** module.
 
 ```bash
 git clone https://github.com/MerlanOurBoss/VR_Application_For_School.git
 ```
 
-1. Добавьте папку проекта в Unity Hub и откройте её в Unity 2021.3.16f1. Первый импорт может занять продолжительное время.
-2. Откройте нужную сцену из `Assets/Scenes`.
-3. Подключите шлем к ПК и нажмите **Play**.
+1. Add the project folder to Unity Hub and open it in Unity 2021.3.16f1. The first import may take a while.
+2. Open the scene you need from `Assets/Scenes`.
+3. Connect your headset to the PC and press **Play**.
 
-### Сборка под Android
+### Building for Android
 
-1. Откройте **File → Build Settings** и переключите платформу на **Android**.
-2. В **Player Settings → Publishing Settings** укажите пароли для `user.keystore` (алиас `add`) или выберите свой keystore. Пароли в репозитории не хранятся.
-3. Подключите шлем в режиме разработчика и выберите его в **Run Device**.
-4. Нажмите **Build And Run**.
+1. Open **File → Build Settings** and switch the platform to **Android**.
+2. In **Player Settings → Publishing Settings**, enter the passwords for `user.keystore` (alias `add`) or select your own keystore. The passwords are not stored in the repository.
+3. Connect the headset in developer mode and select it under **Run Device**.
+4. Click **Build And Run**.
 
-> **Важно:** из `SampleScene` нет перехода в `ComputerNetworks`. В сборке запускается `SampleScene`, поэтому для проверки практикума откройте его сцену в редакторе или поставьте её первой в **Build Settings**.
+> **Important:** there is no transition from `SampleScene` to `ComputerNetworks`. A build starts in `SampleScene`, so to try the networking practical, open its scene in the editor or move it to the first position in **Build Settings**.
 
-## Структура проекта
+## Project structure
 
 ```text
 Assets/
-├── Scenes/            # сцены приложения
-├── Scripts/           # логика лаборатории
-│   ├── Liquid/        # жидкости и реакции
-│   ├── Pen/           # маркер и доска
-│   └── Computer Networks/  # практикум по сетям
-├── Audio/             # озвучка шагов помощника
-├── Resources/         # озвучка реакций на действия ученика
-├── Model/             # 3D-модели и эффекты
-├── Materials/         # материалы и текстуры
-├── Prefabs/           # префабы
-└── Custom asstest/    # настройки XR и сторонние ассеты
+├── Scenes/            # application scenes
+├── Scripts/           # laboratory logic
+│   ├── Liquid/        # liquids and reactions
+│   ├── Pen/           # marker and whiteboard
+│   └── Computer Networks/  # networking practical
+├── Audio/             # voice-over for the assistant's steps
+├── Resources/         # voice-over for responses to student actions
+├── Model/             # 3D models and effects
+├── Materials/         # materials and textures
+├── Prefabs/           # prefabs
+└── Custom asstest/    # XR settings and third-party assets
 ```
 
-Основные скрипты практикума:
+Key scripts in the networking practical:
 
-| Скрипт | Назначение |
+| Script | Purpose |
 |---|---|
-| `AIHelper.cs` | Шаги, подсказки и озвучка помощника |
-| `buttonPushConnect.cs` | Проверка типа соединения и подключение кабеля |
-| `IPAddressGame.cs` | Выбор целевого IP, таймер и счётчик компьютеров |
-| `IPv4Address.cs` | Генерация IP-адреса компьютера |
-| `NavigationArrow.cs` | Стрелка к целевому компьютеру |
-| `Vlan.cs` | Номер VLAN |
-| `Ping.cs` | Имитация вывода `ping` |
+| `AIHelper.cs` | Assistant steps, prompts, and voice-over |
+| `buttonPushConnect.cs` | Connection type check and cable connection |
+| `IPAddressGame.cs` | Target IP selection, timer, and computer counter |
+| `IPv4Address.cs` | Computer IP address generation |
+| `NavigationArrow.cs` | Arrow pointing to the target computer |
+| `Vlan.cs` | VLAN number |
+| `Ping.cs` | Simulated `ping` output |
 
-## Автор
+## Author
 
 [MerlanOurBoss](https://github.com/MerlanOurBoss)
